@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Bairro implements Serializable {
 
@@ -23,10 +26,12 @@ public class Bairro implements Serializable {
 
 	private String nome;
 
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "bairro")
 	private List<Endereco> enderecos = new ArrayList<>();
 
