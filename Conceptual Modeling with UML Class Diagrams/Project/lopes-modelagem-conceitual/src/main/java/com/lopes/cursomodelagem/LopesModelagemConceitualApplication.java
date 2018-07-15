@@ -16,6 +16,7 @@ import com.lopes.cursomodelagem.model.Cidade;
 import com.lopes.cursomodelagem.model.Cliente;
 import com.lopes.cursomodelagem.model.Endereco;
 import com.lopes.cursomodelagem.model.Estado;
+import com.lopes.cursomodelagem.model.ItemPedido;
 import com.lopes.cursomodelagem.model.Pagamento;
 import com.lopes.cursomodelagem.model.PagamentoComBoleto;
 import com.lopes.cursomodelagem.model.PagamentoComCartao;
@@ -29,6 +30,7 @@ import com.lopes.cursomodelagem.repository.CidadeRepository;
 import com.lopes.cursomodelagem.repository.ClienteRepository;
 import com.lopes.cursomodelagem.repository.EnderecoRepository;
 import com.lopes.cursomodelagem.repository.EstadoRepository;
+import com.lopes.cursomodelagem.repository.ItemPedidoRepository;
 import com.lopes.cursomodelagem.repository.PagamentoRepository;
 import com.lopes.cursomodelagem.repository.PedidoRepository;
 import com.lopes.cursomodelagem.repository.ProdutoRepository;
@@ -63,6 +65,9 @@ public class LopesModelagemConceitualApplication implements CommandLineRunner {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(LopesModelagemConceitualApplication.class, args);
 	}
@@ -71,20 +76,22 @@ public class LopesModelagemConceitualApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Categoria cat1 = new Categoria("Descartáveis");
+		Categoria cat1 = new Categoria("Diversos");
 		Categoria cat2 = new Categoria("Combustíveis");
 
 		Produto p1 = new Produto("Guardanapo de papel", new BigDecimal("20.00"));
 		Produto p2 = new Produto("Gasolina", new BigDecimal("2000.00"));
+		Produto p3 = new Produto("Álcool", new BigDecimal("100.00"));
 
-		cat1.getProdutos().addAll(Arrays.asList(p1, p2));
-		cat2.getProdutos().addAll(Arrays.asList(p1));
+		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
+		cat2.getProdutos().addAll(Arrays.asList(p2, p3));
 
-		p1.getCategorias().addAll(Arrays.asList(cat1, cat2));
-		p2.getCategorias().addAll(Arrays.asList(cat1));
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat1, cat2));
 
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
-		produtoRepository.saveAll(Arrays.asList(p1, p2));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
 		Estado est1 = new Estado("Ceará", "CE");
 		Estado est2 = new Estado("Rio Grande do Norte", "RN");
@@ -134,6 +141,19 @@ public class LopesModelagemConceitualApplication implements CommandLineRunner {
 
 		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
+
+		ItemPedido it1 = new ItemPedido(pedido1, p1, new BigDecimal("0.00"), 10, new BigDecimal("200.23"));
+		ItemPedido it2 = new ItemPedido(pedido1, p3, new BigDecimal("0.00"), 100, new BigDecimal("80.00"));
+		ItemPedido it3 = new ItemPedido(pedido2, p2, new BigDecimal("0.00"), 1, new BigDecimal("40.00"));
+
+		pedido1.getItens().addAll(Arrays.asList(it1, it2));
+		pedido2.getItens().addAll(Arrays.asList(it3));
+
+		p1.getItens().addAll(Arrays.asList(it1));
+		p2.getItens().addAll(Arrays.asList(it3));
+		p3.getItens().addAll(Arrays.asList(it2));
+
+		itemPedidoRepository.saveAll(Arrays.asList(it1, it2, it3));
 
 	}
 }
