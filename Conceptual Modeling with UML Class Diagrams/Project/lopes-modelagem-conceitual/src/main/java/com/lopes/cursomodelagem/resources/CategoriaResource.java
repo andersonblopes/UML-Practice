@@ -1,5 +1,7 @@
 package com.lopes.cursomodelagem.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,14 @@ public class CategoriaResource {
 		Categoria categoria = categoriaService.search(id);
 
 		return ResponseEntity.ok().body(categoria);
+	}
+
+	@GetMapping
+	public ResponseEntity<?> listar() {
+
+		List<Categoria> categorias = categoriaService.listar();
+
+		return ResponseEntity.ok().body(categorias);
 	}
 
 }

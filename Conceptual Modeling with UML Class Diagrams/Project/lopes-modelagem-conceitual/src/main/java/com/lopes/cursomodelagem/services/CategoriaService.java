@@ -1,5 +1,6 @@
 package com.lopes.cursomodelagem.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class CategoriaService {
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
 		return categoria.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + " Class: " + Categoria.class.getName()));
+	}
+
+	public List<Categoria> listar() {
+		List<Categoria> categorias = categoriaRepository.findAll();
+		return categorias;
 	}
 
 }
