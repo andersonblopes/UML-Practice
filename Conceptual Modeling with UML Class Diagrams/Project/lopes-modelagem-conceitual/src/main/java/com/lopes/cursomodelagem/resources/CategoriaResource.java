@@ -1,7 +1,5 @@
 package com.lopes.cursomodelagem.resources;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +20,9 @@ public class CategoriaResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> buscar(@PathVariable Long id) {
 
-		Optional<Categoria> categoria = categoriaService.search(id);
+		Categoria categoria = categoriaService.search(id);
 
-		return categoria.isPresent() ? ResponseEntity.ok().body(categoria) : ResponseEntity.notFound().build();
+		return ResponseEntity.ok().body(categoria);
 	}
 
 }
