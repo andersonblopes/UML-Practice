@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Cidade implements Serializable {
+public class Bairro implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,20 +24,20 @@ public class Cidade implements Serializable {
 	private String nome;
 
 	@ManyToOne
-	@JoinColumn(name = "estado_id")
-	private Estado estado;
+	@JoinColumn(name = "cidade_id")
+	private Cidade cidade;
 
-	@OneToMany(mappedBy = "cidade")
-	private List<Bairro> bairros = new ArrayList<>();
+	@OneToMany(mappedBy = "bairro")
+	private List<Endereco> enderecos = new ArrayList<>();
 
-	public Cidade() {
+	public Bairro() {
 
 	}
 
-	public Cidade(String nome, Estado estado) {
+	public Bairro(String nome, Cidade cidade) {
 		super();
 		this.nome = nome;
-		this.estado = estado;
+		this.cidade = cidade;
 	}
 
 	public Long getId() {
@@ -56,20 +56,20 @@ public class Cidade implements Serializable {
 		this.nome = nome;
 	}
 
-	public Estado getEstado() {
-		return estado;
+	public Cidade getCidade() {
+		return cidade;
 	}
 
-	public void setEstado(Estado estado) {
-		this.estado = estado;
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
-	public List<Bairro> getBairros() {
-		return bairros;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setBairros(List<Bairro> bairros) {
-		this.bairros = bairros;
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Cidade implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cidade other = (Cidade) obj;
+		Bairro other = (Bairro) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
