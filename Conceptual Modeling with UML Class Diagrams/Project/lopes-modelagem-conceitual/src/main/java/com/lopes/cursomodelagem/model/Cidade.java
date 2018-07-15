@@ -1,33 +1,18 @@
 package com.lopes.cursomodelagem.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Produto implements Serializable {
+public class Cidade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public Produto() {
-	}
-
-	public Produto(String nome, BigDecimal preco) {
-		super();
-		this.nome = nome;
-		this.preco = preco;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +20,19 @@ public class Produto implements Serializable {
 
 	private String nome;
 
-	private BigDecimal preco;
+	@ManyToOne
+	@JoinColumn(name = "estado_id")
+	private Estado estado;
 
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-	private List<Categoria> categorias = new ArrayList<>();
+	public Cidade() {
+
+	}
+
+	public Cidade(String nome, Estado estado) {
+		super();
+		this.nome = nome;
+		this.estado = estado;
+	}
 
 	public Long getId() {
 		return id;
@@ -58,20 +50,12 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
-
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	@Override
@@ -90,7 +74,7 @@ public class Produto implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

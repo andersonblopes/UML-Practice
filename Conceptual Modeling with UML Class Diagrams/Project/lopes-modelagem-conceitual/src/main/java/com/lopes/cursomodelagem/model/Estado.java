@@ -1,7 +1,6 @@
 package com.lopes.cursomodelagem.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,25 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Produto implements Serializable {
+public class Estado implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public Produto() {
-	}
-
-	public Produto(String nome, BigDecimal preco) {
-		super();
-		this.nome = nome;
-		this.preco = preco;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +21,20 @@ public class Produto implements Serializable {
 
 	private String nome;
 
-	private BigDecimal preco;
+	private String sigla;
 
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-	private List<Categoria> categorias = new ArrayList<>();
+	@OneToMany(mappedBy = "estado")
+	private List<Cidade> cidades = new ArrayList<>();
+
+	public Estado() {
+
+	}
+
+	public Estado(String nome, String sigla) {
+		super();
+		this.nome = nome;
+		this.sigla = sigla;
+	}
 
 	public Long getId() {
 		return id;
@@ -58,20 +52,20 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
+	public String getSigla() {
+		return sigla;
 	}
 
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
 	@Override
@@ -90,7 +84,7 @@ public class Produto implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
