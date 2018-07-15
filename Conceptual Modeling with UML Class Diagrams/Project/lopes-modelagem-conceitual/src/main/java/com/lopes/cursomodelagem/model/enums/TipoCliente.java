@@ -1,4 +1,4 @@
-package com.lopes.cursomodelagem.model;
+package com.lopes.cursomodelagem.model.enums;
 
 public enum TipoCliente {
 
@@ -24,6 +24,7 @@ public enum TipoCliente {
 		if (codigo == null) {
 			return null;
 		}
+
 		for (TipoCliente tipoCliente : TipoCliente.values()) {
 			if (codigo.equals(tipoCliente.getCodigo())) {
 				return tipoCliente;

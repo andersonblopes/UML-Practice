@@ -1,6 +1,8 @@
 package com.lopes.cursomodelagem;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,21 @@ import com.lopes.cursomodelagem.model.Cidade;
 import com.lopes.cursomodelagem.model.Cliente;
 import com.lopes.cursomodelagem.model.Endereco;
 import com.lopes.cursomodelagem.model.Estado;
+import com.lopes.cursomodelagem.model.Pagamento;
+import com.lopes.cursomodelagem.model.PagamentoComBoleto;
+import com.lopes.cursomodelagem.model.PagamentoComCartao;
+import com.lopes.cursomodelagem.model.Pedido;
 import com.lopes.cursomodelagem.model.Produto;
-import com.lopes.cursomodelagem.model.TipoCliente;
+import com.lopes.cursomodelagem.model.enums.EstadoPagamento;
+import com.lopes.cursomodelagem.model.enums.TipoCliente;
 import com.lopes.cursomodelagem.repository.BairroRepository;
 import com.lopes.cursomodelagem.repository.CategoriaRepository;
 import com.lopes.cursomodelagem.repository.CidadeRepository;
 import com.lopes.cursomodelagem.repository.ClienteRepository;
 import com.lopes.cursomodelagem.repository.EnderecoRepository;
 import com.lopes.cursomodelagem.repository.EstadoRepository;
+import com.lopes.cursomodelagem.repository.PagamentoRepository;
+import com.lopes.cursomodelagem.repository.PedidoRepository;
 import com.lopes.cursomodelagem.repository.ProdutoRepository;
 
 @SpringBootApplication
@@ -47,6 +56,12 @@ public class LopesModelagemConceitualApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LopesModelagemConceitualApplication.class, args);
@@ -107,6 +122,18 @@ public class LopesModelagemConceitualApplication implements CommandLineRunner {
 		Endereco end4 = new Endereco("Rua D", "444", "", b3, "60.732.23", empresa);
 
 		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3, end4));
+
+		Pedido pedido1 = new Pedido(LocalDateTime.of(2016, Month.APRIL, 4, 22, 30), anderson, end1);
+		Pedido pedido2 = new Pedido(LocalDateTime.of(2013, Month.DECEMBER, 4, 12, 10), elaine, end2);
+
+		Pagamento pag1 = new PagamentoComCartao(EstadoPagamento.QUITADO, pedido1, 6);
+		pedido1.setPagamento(pag1);
+		Pagamento pag2 = new PagamentoComBoleto(EstadoPagamento.PENDENTE, pedido2,
+				LocalDateTime.of(2014, Month.JANUARY, 4, 12, 10), null);
+		pedido2.setPagamento(pag2);
+
+		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 
 	}
 }
